@@ -78,12 +78,13 @@ public class Main {
         Button button2 = new Button(simpleCommand);
         Button button3 = new Button(simpleCommand);
 
-        ButtonCollection buttonCollection = new ButtonCollection();
-        buttonCollection.addButton(button1);
-        buttonCollection.addButton(button2);
-        buttonCollection.addButton(button3);
+        ButtonCollection buttonCollection = new ButtonCollection(2);
+        buttonCollection.add(button1);
+        buttonCollection.add(button2);
+        buttonCollection.add(button3);
 
         Iterator<Button> iterator = buttonCollection.iterator();
+
         while (iterator.hasNext()) {
             Button button = iterator.next();
             button.click();

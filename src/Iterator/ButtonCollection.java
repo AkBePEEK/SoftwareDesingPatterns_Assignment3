@@ -3,29 +3,22 @@ package Iterator;
 import Command.Button;
 
 public class ButtonCollection implements Aggregate<Button>{
-    private TreeNode root;
-    public ButtonCollection(){
-        root = null;
+    private final Button[] buttons;
+    private int currentIndex = 0;
+    public ButtonCollection(int size) {
+        buttons = new Button[size];
     }
-    public void addButton(Button button){
-        root = addRecursive(root, button);
+    public void add(Button button) {
+        if (currentIndex >= buttons.length) {
+            System.out.println("Button list is full");
+            return;
+        }
+        buttons[currentIndex] = button;
+        currentIndex++;
     }
-    private TreeNode addRecursive(TreeNode node, Button button){
-        if(node == null){
-            return new TreeNode(button);
-        }
-        if (Math.random() > 0.5){
-            node.left = addRecursive(node.left, button);
-        }
-        else{
-            node.right = addRecursive(node.right, button);
-        }
-        return node;
-    }
-
 
     @Override
     public Iterator<Button> iterator() {
-        return new ButtonIterator(root);
+        return new ButtonIterator(buttons);
     }
 }
