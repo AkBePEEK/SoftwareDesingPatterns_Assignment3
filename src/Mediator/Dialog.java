@@ -4,40 +4,26 @@ import Chain.*;
 import Command.*;
 
 public class Dialog implements Mediator{
-    private SystemProcessHandler systemProcessHandler;
-    private UserApplicationHandler userApplicationHandler;
-    private BackgroundProcessHandler backgroundProcessHandler;
-    private ShuttingDownPC shuttingDownPC;
-    private TurningOnPC turningOnPC;
-    public void setSystemProcessHandler(SystemProcessHandler systemProcessHandler) {
+    private ProcessHandler systemProcessHandler;
+    private ProcessHandler userApplicationHandler;
+    private ProcessHandler backgroundProcessHandler;
+    public void setSystemProcessHandler(ProcessHandler systemProcessHandler) {
         this.systemProcessHandler = systemProcessHandler;
     }
-    public void setUserApplicationHandler(UserApplicationHandler userApplicationHandler) {
+    public void setUserApplicationHandler(ProcessHandler userApplicationHandler) {
         this.userApplicationHandler = userApplicationHandler;
     }
-    public void setBackgroundProcessHandler(BackgroundProcessHandler backgroundProcessHandler) {
+    public void setBackgroundProcessHandler(ProcessHandler backgroundProcessHandler) {
         this.backgroundProcessHandler = backgroundProcessHandler;
     }
     @Override
-    public void send(String message, ProcessHandler handler) {
-        if (handler.equals(systemProcessHandler)){
-            System.out.println("Mediator directing message to SystemProcessHandler: " + message);
-        }
-        else if (handler.equals(userApplicationHandler)){
-            System.out.println("Mediator directing message to UserApplicationHandler: " + message);
-        }
-        else if (handler.equals(backgroundProcessHandler)) {
-            System.out.println("Mediator directing message to BackgroundProcessHandler: " + message);
-        }
-    }
-
-    @Override
-    public void sendCommand(String message, Command command) {
-        if (command.equals(shuttingDownPC)){
-            System.out.println("Mediator directing message to shuttingDownPC: " + message + "PC is shutting down.");
-        }
-        else if (command.equals(turningOnPC)){
-            System.out.println("Mediator directing message to turningOnPC: " + message + "PC is turning on.");
-        }
+    public void send(Command command, ProcessHandler handler) {
+        if (handler == systemProcessHandler)
+            System.out.println("Mediator directing message to SystemProcessHandler.");
+        else if (handler == userApplicationHandler)
+            System.out.println("Mediator directing message to UserApplicationHandler.");
+        else if (handler == backgroundProcessHandler)
+            System.out.println("Mediator directing message to BackgroundProcessHandler.");
+        command.execute();
     }
 }

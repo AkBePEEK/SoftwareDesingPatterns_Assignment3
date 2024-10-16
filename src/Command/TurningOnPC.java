@@ -1,6 +1,6 @@
 package Command;
 
-public class TurningOnPC implements Command{
+public class TurningOnPC implements Command {
     private final PC pc;
     public String type;
     public TurningOnPC(PC pc, String type){

@@ -1,15 +1,17 @@
 import Chain.*;
 import Command.*;
 import Mediator.*;
+import Iterator.*;
 
 
 public class Main {
     public static void main(String[] args) {
 
         // 1.Chain of Responsibility
-        ProcessHandler System1 = new SystemProcessHandler();
-        ProcessHandler Background = new UserApplicationHandler();
-        ProcessHandler User = new BackgroundProcessHandler();
+        Dialog dialog1 = new Dialog();
+        ProcessHandler System1 = new SystemProcessHandler(dialog1);
+        ProcessHandler Background = new UserApplicationHandler(dialog1);
+        ProcessHandler User = new BackgroundProcessHandler(dialog1);
 
         System1.setNextHandler(Background);
         Background.setNextHandler(User);
@@ -52,10 +54,39 @@ public class Main {
         buttonOn2.click();
         buttonOff1.click();
         buttonOff2.click();
+        System.out.println("\n");
 
         //3.Mediator
 
-        Mediator dialog = new Dialog();
+        Dialog dialog = new Dialog();
+        ProcessHandler sys = new SystemProcessHandler(dialog);
+        ProcessHandler user = new UserApplicationHandler(dialog);
+        ProcessHandler back = new BackgroundProcessHandler(dialog);
+        dialog.setBackgroundProcessHandler(back);
+        dialog.setUserApplicationHandler(user);
+        dialog.setSystemProcessHandler(sys);
+        dialog.send(turnOn1, sys);
+        dialog.send(turnOn2, back);
+        dialog.send(turnOf1, user);
+        dialog.send(turnOf2, back);
+        System.out.println("\n");
 
+        //4 Iterator
+        Command simpleCommand = () -> System.out.println("Button clicked!");
+
+        Button button1 = new Button(simpleCommand);
+        Button button2 = new Button(simpleCommand);
+        Button button3 = new Button(simpleCommand);
+
+        ButtonCollection buttonCollection = new ButtonCollection();
+        buttonCollection.addButton(button1);
+        buttonCollection.addButton(button2);
+        buttonCollection.addButton(button3);
+
+        Iterator<Button> iterator = buttonCollection.iterator();
+        while (iterator.hasNext()) {
+            Button button = iterator.next();
+            button.click();
+        }
     }
 }
